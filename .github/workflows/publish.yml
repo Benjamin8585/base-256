@@ -1,0 +1,24 @@
+name: github-published
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: "startsWith(github.event.head_commit.message, 'chore(release)')"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+      - name: Adding .npmrc file
+        run: echo -e "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}\n@Benjamin8585:registry=https://npm.pkg.github.com" >> .npmrc
+      - run: yarn install
+      - name: Publishing on Github private package registry
+        run: |
+          mkdir ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          yarn publish

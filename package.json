@@ -1,0 +1,47 @@
+{
+  "name": "base256",
+  "version": "0.1.0",
+  "description": "Base256 encoding/decoding library",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "start": "node lib/index.js",
+    "build": "tsc",
+    "test": "jest --config jestconfig.json --env=node",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint -c .eslintrc.js --ext .ts src",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Benjamin8585/base256.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Benjamin8585/base256/issues"
+  },
+  "homepage": "https://github.com/Benjamin8585/base256#readme",
+  "devDependencies": {
+    "@types/jest": "25.1.2",
+    "jest": "25.1.0",
+    "ts-jest": "25.2.0",
+    "@typescript-eslint/eslint-plugin": "^5.2.0",
+    "@typescript-eslint/parser": "^5.2.0",
+    "del-cli": "3.0.0",
+    "eslint": "^8.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "typescript": "3.7.5",
+    "prettier": "2.4.1"
+  },
+  "dependencies": {
+  }
+}

@@ -1,0 +1,28 @@
+name: version-increment
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    if: |
+      !startsWith(github.event.head_commit.message, 'chore(release)') &&
+      !startsWith(github.event.head_commit.message, '(skip)')
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+      - name: Installing packages
+        run: yarn install
+      - name: Run version increment and add RELEASE tag
+        run: |
+          git config --global user.email "bourasseaubenjamin@gmail.com"
+          git config --global user.name "Benjamin8585"
+          npm version patch -m "chore(release) %s"
+          git push
