@@ -3,13 +3,21 @@
 ### Base256 encoding/decoding library
 
 **cleanBinary**: clean unwanted zeros
+
 **encodeNumber**: transform number to base 256
+
 **decodeNumber**: decode base 256 to number
+
 **encodeNumbers**: encode array of numbers to base256 (With **|** as separator between encoded numbers)
+
 **decodeNumbers**: decode base256 array of numbers
+
 **encodeString**: encode string in base256
+
 **decodeString**: decode base 256 to string
+
 **encodeBinary**: encode binary to base 256
+
 **decodeToBinary**: decode base 256 to binary
 
 #### CI Information
