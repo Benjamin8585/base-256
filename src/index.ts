@@ -2,10 +2,10 @@
 import { encodeTable, decodeTable } from "./table";
 
 /*
-    Value from 0 to 255
+    input array of: Value from 0 to 255
+    returns associated encoded character
  */
 export function encodeTo256(value256: number[]): string {
-  console.log('Value 256 to encode:', value256);
   let encoded = '';
   for (let i = 0; i < value256.length; i++) {
     encoded += encodeTable[value256[i]];
@@ -14,7 +14,8 @@ export function encodeTo256(value256: number[]): string {
 }
 
 /*
-  Value to 255
+    input encoded characters
+    returns array of values between 0 and 255
  */
 export function decodeTo256(value: string): number[] {
   let array: number[] = [];
@@ -24,6 +25,10 @@ export function decodeTo256(value: string): number[] {
   return array;
 }
 
+/*
+  Transform binary string to array of values between 0 and 255
+  Binary must be in chunks of 8bit (00000000) for strings
+ */
 function splitToByte(binary: string): number[] {
   let binaryWithZero = binary;
   while (binaryWithZero.length % 8 != 0) {
@@ -37,16 +42,30 @@ function splitToByte(binary: string): number[] {
   return arr;
 }
 
+/*
+  Encode binary to base256
+ */
 export function encodeBinary(binary: string): string {
-  console.log('Binary encode length: ', binary.length);
   const bytes: number[] = splitToByte(binary);
   return encodeTo256(bytes);
 }
 
+/*
+  Remove useless zero for binaries
+ */
+export function cleanBinary(binary: string): string {
+  let cleaned = binary;
+  while (cleaned.length > 1 && cleaned.charAt(0) === "0") {
+    cleaned = cleaned.substring(1);
+  }
+  return cleaned;
+}
+
+/*
+  Decode base256 to binary
+ */
 export function decodeToBinary(encoded: string): string {
   const array = decodeTo256(encoded);
-  console.log('Value 256 decoded:', array);
-  console.log('Value 256 decoded length:', array.length);
   let binaryString = '';
   for (let i = 0; i < array.length; i++) {
     let value = array[i].toString(2);
@@ -55,35 +74,65 @@ export function decodeToBinary(encoded: string): string {
     }
     binaryString += value;
   }
-  console.log('Binary decoded length: ', binaryString.length);
   return binaryString;
 }
 
+/*
+  Encode full string to base256
+ */
 export function encodeString(value: string): string {
-  const binary = value.split('').map(function (char) { return char.charCodeAt(0).toString(2); }).join('');
+  const binary = value.split('').map(function (char) {
+    let bin = char.charCodeAt(0).toString(2);
+    while (bin.length < 8) {
+      bin = '0' + bin;
+    }
+    return bin;
+  }).join('');
   return encodeBinary(binary);
 }
 
+/*
+  Decode full string to base256
+ */
 export function decodeString(encoded: string): string {
   const binary = decodeToBinary(encoded);
   let chunks = [];
   for (let i = 0, charsLength = binary.length; i < charsLength; i += 8) {
     chunks.push(binary.substring(i, i + 8));
   }
-  console.log('Chunks: ', chunks);
   return chunks.map(bin => String.fromCharCode(parseInt(bin, 2))).join('');
 }
 
-// const binary = '010010000110010101101100011011000110111100100000011101110110111101110010011011000110010000100001';
-// console.log('Binary: ', binary);
-// const encoded = encodeBinary(binary);
-// console.log('Encoded', encoded);
-// const binaryDecoded = decodeToBinary(encoded);
-// console.log('Decoded', binaryDecoded);
-// console.log('Debug: ', binary == binaryDecoded)
+/*
+  Encode number to base256
+ */
+export function encodeNumber(value: number): string {
+  const binary = value.toString(2);
+  return encodeBinary(binary);
+}
 
-console.log('String: ', 'Helloworld!');
-console.log('010010000110010101101100011011000110111100100000011101110110111101110010011011000110010000100001')
-const encodedStr = encodeString('Helloworld!');
-console.log('Encoded', encodedStr);
-console.log('Decoded', decodeString(encodedStr));
+/*
+  Encode number to base256
+ */
+export function encodeNumbers(values: number[]): string {
+  return values.map((value) => {
+    return encodeNumber(value);
+  }).join('|');
+}
+
+/*
+  Decode base256 to number
+ */
+export function decodeNumber(encoded: string): number {
+  const binary = decodeToBinary(encoded);
+  return parseInt(binary, 2);
+}
+
+/*
+  Decode base256 to number
+ */
+export function decodeNumbers(encoded: string): number[] {
+  return encoded.split('|').map((encodedNumb) => {
+    return decodeNumber(encodedNumb);
+  });
+}
