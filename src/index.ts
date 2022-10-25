@@ -1,5 +1,4 @@
-
-import { encodeTable, decodeTable } from "./table";
+import { encodeTable, decodeTable } from './table';
 
 /*
     input array of: Value from 0 to 255
@@ -32,7 +31,7 @@ export function decodeTo256(value: string): number[] {
 function splitToByte(binary: string): number[] {
   let binaryWithZero = binary;
   while (binaryWithZero.length % 8 != 0) {
-    binaryWithZero = "0" + binaryWithZero;
+    binaryWithZero = '0' + binaryWithZero;
   }
   const arr: number[] = [];
   for (let index = 0; index < binaryWithZero.length; index += 8) {
@@ -55,7 +54,7 @@ export function encodeBinary(binary: string): string {
  */
 export function cleanBinary(binary: string): string {
   let cleaned = binary;
-  while (cleaned.length > 1 && cleaned.charAt(0) === "0") {
+  while (cleaned.length > 1 && cleaned.charAt(0) === '0') {
     cleaned = cleaned.substring(1);
   }
   return cleaned;
@@ -81,13 +80,16 @@ export function decodeToBinary(encoded: string): string {
   Encode full string to base256
  */
 export function encodeString(value: string): string {
-  const binary = value.split('').map(function (char) {
-    let bin = char.charCodeAt(0).toString(2);
-    while (bin.length < 8) {
-      bin = '0' + bin;
-    }
-    return bin;
-  }).join('');
+  const binary = value
+    .split('')
+    .map(function (char) {
+      let bin = char.charCodeAt(0).toString(2);
+      while (bin.length < 8) {
+        bin = '0' + bin;
+      }
+      return bin;
+    })
+    .join('');
   return encodeBinary(binary);
 }
 
@@ -100,7 +102,7 @@ export function decodeString(encoded: string): string {
   for (let i = 0, charsLength = binary.length; i < charsLength; i += 8) {
     chunks.push(binary.substring(i, i + 8));
   }
-  return chunks.map(bin => String.fromCharCode(parseInt(bin, 2))).join('');
+  return chunks.map((bin) => String.fromCharCode(parseInt(bin, 2))).join('');
 }
 
 /*
@@ -115,9 +117,11 @@ export function encodeNumber(value: number): string {
   Encode number to base256
  */
 export function encodeNumbers(values: number[]): string {
-  return values.map((value) => {
-    return encodeNumber(value);
-  }).join('|');
+  return values
+    .map((value) => {
+      return encodeNumber(value);
+    })
+    .join('|');
 }
 
 /*
