@@ -2,20 +2,20 @@ import {
   cleanBinary,
   decodeNumber,
   decodeNumbers,
-  decodeString, decodeToBinary,
+  decodeString,
+  decodeToBinary,
   encodeBinary,
   encodeNumber,
   encodeNumbers,
   encodeString,
-} from "../index";
+} from '../index';
 import { faker } from '@faker-js/faker';
 
 const debugTests = false;
 
 describe('index', () => {
-
   test('encode/decode binary should return same value', async () => {
-    const binary = faker.random.numeric(50, { bannedDigits: ["2", "3", "4", "5", "6", "7", "8", "9"] });
+    const binary = faker.random.numeric(50, { bannedDigits: ['2', '3', '4', '5', '6', '7', '8', '9'] });
     const encoded = encodeBinary(binary);
     const binaryDecoded = cleanBinary(decodeToBinary(encoded));
     if (debugTests) {
@@ -55,7 +55,7 @@ describe('index', () => {
       parseInt(faker.random.numeric(50)),
       parseInt(faker.random.numeric(40)),
       parseInt(faker.random.numeric(70)),
-      parseInt(faker.random.numeric(30))
+      parseInt(faker.random.numeric(30)),
     ];
     const encodedNumbers = encodeNumbers(numbers);
     const decodedNumbers = decodeNumbers(encodedNumbers);
@@ -79,7 +79,7 @@ describe('index', () => {
       console.log('Cleaned', cleaned);
     }
     expect(cleanedBinary).toEqual(cleaned);
-    expect(cleanBinary(fullOfZero)).toEqual("0");
+    expect(cleanBinary(fullOfZero)).toEqual('0');
     expect(binaryNotCleanable).toEqual(cleanBinary(binaryNotCleanable));
   });
 });
