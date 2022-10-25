@@ -1,5 +1,5 @@
 {
-  "name": "base256",
+  "name": "@Benjamin8585/base256",
   "version": "0.1.0",
   "description": "Base256 encoding/decoding library",
   "main": "lib/index.js",
@@ -22,6 +22,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Benjamin8585/base256.git"
+  },
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com/@Benjamin8585"
   },
   "keywords": [],
   "author": "",
